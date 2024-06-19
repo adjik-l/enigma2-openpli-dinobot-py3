@@ -1,6 +1,6 @@
+# -*- coding: utf-8 -*-
 import enigma
 import time
-
 import tests
 
 #enigma.reset()
@@ -14,7 +14,7 @@ def test_timer(repeat=0, timer_start=3600, timer_length=1000, sim_length=86400 *
 
 	t = NavigationInstance.instance.RecordTimer
 	print(t)
-	print("old mwt:", t.MaxWaitTime)
+	print("[test_timer] old mwt:", t.MaxWaitTime)
 	t.MaxWaitTime = 86400 * 1000
 
 	# hack:
@@ -24,10 +24,10 @@ def test_timer(repeat=0, timer_start=3600, timer_length=1000, sim_length=86400 *
 	t.timer_list = []
 
 	# generate a timer to test
-	import xml.etree.ElementTree
+	import xml.etree.cElementTree
 	import RecordTimer
 
-	timer = RecordTimer.createTimer(xml.etree.ElementTree.fromstring(
+	timer = RecordTimer.createTimer(xml.etree.cElementTree.fromstring(
 	"""
 		<timer
 			begin="%d"
@@ -48,18 +48,18 @@ def test_timer(repeat=0, timer_start=3600, timer_length=1000, sim_length=86400 *
 	# run virtual environment
 	enigma.run(sim_length)
 
-	print("done.")
+	print("[test_timer] done.")
 
 	timers = t.processed_timers + t.timer_list
 
-	print("start: %s" % (time.ctime(at + 10)))
+	print("[test_timer] start: %s" % (time.ctime(at + 10)))
 
 	assert len(timers) == 1
 
 	for t in timers:
-		print("begin=%d, end=%d, repeated=%d, state=%d" % (t.begin - at, t.end - at, t.repeated, t.state))
-		print("begin: %s" % (time.ctime(t.begin)))
-		print("end: %s" % (time.ctime(t.end)))
+		print("[test_timer] begin=%d, end=%d, repeated=%d, state=%d" % (t.begin - at, t.end - at, t.repeated, t.state))
+		print("[test_timer] begin: %s" % (time.ctime(t.begin)))
+		print("[test_timer] end: %s" % (time.ctime(t.end)))
 
 	# if repeat, check if the calculated repeated time of day matches the initial time of day
 	if repeat:
@@ -90,4 +90,4 @@ time.tzset()
 
 #log(test_timer, test_name = "test_timer_repeating", base_time = calendar.timegm((2007, 3, 1, 12, 0, 0)), repeat=0x7f, sim_length = 86400 * 7)
 log(test_timer, test_name="test_timer_repeating_dst_skip", base_time=calendar.timegm((2007, 3, 20, 0, 0, 0)), timer_start=3600, repeat=0x7f, sim_length=86400 * 7)
-#log(test_timer, test_name = "test_timer_repeating_dst_start", base_time = calendar.timegm((2007, 03, 20, 0, 0, 0)), timer_start = 10000, repeat=0x7f, sim_length = 86400 * 7)
+#log(test_timer, test_name = "test_timer_repeating_dst_start", base_time = calendar.timegm((2007, 3, 20, 0, 0, 0)), timer_start = 10000, repeat=0x7f, sim_length = 86400 * 7)
