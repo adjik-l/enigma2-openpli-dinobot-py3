@@ -52,11 +52,6 @@ elif [ -f /proc/stb/fp/led_brightness ]; then
 	echo "000000ff" > /proc/stb/fp/led_brightness
 fi
 
-if [ -f /proc/stb/fp/nec_ir ]; then
-	echo "1" > /proc/stb/fp/nec_ir
-	[ -f /sys/class/remote/amremote/protocol ] && echo "2" > /sys/class/remote/amremote/protocol
-fi
-
 # LC_ALL available?
 if [ -z $LC_ALL ] && [ ${PYVER::1} == 3 ]; then
 	export LC_ALL=en_GB.utf8
